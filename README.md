@@ -33,7 +33,3 @@ This tool allows users to upload RNA sequences and perform various analyses. It 
 1. Upload an RNA sequence file (in FASTA format).
 2. Select the function you want to perform on the sequence (e.g., sequence statistics, motif search).
 3. View the results, which will include key statistics and visualizations of your data.
-
-## Contributing
-If you'd like to contribute to this project, feel free to fork the repository and submit a pull request with your improvements or bug fixes.
-
