@@ -1,0 +1,136 @@
+{
+  "singleSequence": [
+    {
+      "name": "Predict Structure",
+      "description": "Predict RNA secondary structure.",
+      "icon": "FiActivity",
+      "apiRoute": "/predict_structure",
+      "inputs": [
+        {
+          "label": "Sequence Type",
+          "type": "select",
+          "options": ["mRNA", "tRNA", "rRNA"]
+        },
+        {
+          "label": "Energy Cutoff",
+          "type": "number",
+          "placeholder": "Enter energy cutoff"
+        }
+      ]
+    },
+    {
+      "name": "Motif Search",
+      "description": "Find regulatory elements in RNA sequence.",
+      "icon": "FiSearch",
+      "apiRoute": "/motif_search",
+      "inputs": [
+        {
+          "label": "Motif Length",
+          "type": "number",
+          "placeholder": "Enter motif length"
+        }
+      ]
+    },
+    {
+      "name": "Splice Site Prediction",
+      "description": "Predict exon-intron junctions (GT-AG motifs).",
+      "icon": "FiScissors",
+      "apiRoute": "/splice_site",
+      "inputs": []
+    },
+    {
+      "name": "RNA Folding Stability",
+      "description": "Calculate free energy (ΔG) to predict RNA stability.",
+      "icon": "FiThermometer",
+      "apiRoute": "/stability",
+      "inputs": [
+        {
+          "label": "Temperature (°C)",
+          "type": "number",
+          "placeholder": "Enter temperature"
+        }
+      ]
+    },
+    {
+      "name": "RNA Half-Life Prediction",
+      "description": "Predicts RNA degradation rate based on sequence composition.",
+      "icon": "FiClock",
+      "apiRoute": "/half_life",
+      "inputs": []
+    },
+    {
+      "name": "Sequence Statistics",
+      "description": "Generate sequence length distribution and nucleotide frequency plots.",
+      "icon": "FiBarChart",
+      "apiRoute": "/sequence_statistics",
+      "inputs": []
+    }
+  ],
+  "multiSequence": [
+    {
+      "name": "Multiple Sequence Alignment",
+      "description": "Align multiple RNA sequences.",
+      "icon": "FiGitMerge",
+      "apiRoute": "/multi_seq_align",
+      "inputs": [
+        {
+          "label": "Alignment Algorithm",
+          "type": "select",
+          "options": ["ClustalW", "Muscle"]
+        }
+      ]
+    },
+    {
+      "name": "RNA Sequence Clustering",
+      "description": "Groups similar RNA sequences based on sequence similarity.",
+      "icon": "FiLayers",
+      "apiRoute": "/clustering",
+      "inputs": [
+        {
+          "label": "Number of Clusters",
+          "type": "number",
+          "placeholder": "Enter number of clusters"
+        }
+      ]
+    },
+    {
+      "name": "Structural Similarity",
+      "description": "Compare RNA folding patterns.",
+      "icon": "FiLayers",
+      "apiRoute": "/struct_similarity",
+      "inputs": [
+        {
+          "label": "Similarity Threshold",
+          "type": "number",
+          "placeholder": "Enter similarity threshold"
+        }
+      ]
+    },
+    {
+      "name": "Motif Co-Occurrence Analysis",
+      "description": "Checks if multiple RNA sequences share regulatory motifs.",
+      "icon": "FiSearch",
+      "apiRoute": "/motif_co_occurrence",
+      "inputs": [
+        {
+          "label": "Motif Length",
+          "type": "number",
+          "placeholder": "Enter motif length"
+        }
+      ]
+    },
+    {
+      "name": "RNA Evolutionary Distance Calculation",
+      "description": "Measures evolutionary distance between RNA sequences.",
+      "icon": "FiGlobe",
+      "apiRoute": "/evolutionary_distance",
+      "inputs": [
+        {
+          "label": "Distance Metric",
+          "type": "select",
+          "options": ["Jukes-Cantor", "Kimura", "Tamura-Nei"]
+        }
+      ]
+    }
+  ]
+}

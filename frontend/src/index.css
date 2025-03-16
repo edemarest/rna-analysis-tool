@@ -1,0 +1,76 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* Google Font */
+@import "@fontsource/inter";
+
+@font-face {
+    font-family: "Poppins";
+    src: url("/src/assets/fonts/Poppins-Semibold.woff") format("woff");
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: "Urbanist";
+    src: url("/src/assets/fonts/Urbanist.woff") format("woff");
+    font-weight: 400;
+    font-style: normal;
+  }
+
+@layer base {
+    body {
+        @apply font-sans bg-background text-textLight;
+        font-family: "Poppins", "Urbanist", sans-serif;
+    }
+}
+
+@layer components {
+    .container {
+        @apply max-w-7xl mx-auto px-8 py-6;
+    }
+
+    .card {
+        @apply bg-card p-6 rounded-lg shadow-lg border border-gray-600;
+    }
+
+    /* Buttons */
+    .btn {
+        @apply px-4 py-3 text-base font-light rounded-md shadow-md transition duration-200;
+    }
+
+    .btn-primary {
+        @apply bg-primary text-white btn;
+    }
+
+    .btn-primary:hover {
+        @apply bg-blue-500;
+    }
+
+    .btn-secondary {
+        @apply bg-secondary text-white btn;
+    }
+
+    .btn-secondary:hover {
+        @apply bg-purple-500;
+    }
+
+    .btn-disabled {
+        @apply bg-gray-500 text-white cursor-not-allowed btn;
+    }
+
+    /* Inputs */
+    .input-field {
+        @apply border border-gray-500 rounded-md px-4 py-3 text-textDark text-sm outline-none w-full;
+    }
+
+    .input-field:focus {
+        @apply ring-2 ring-primary;
+    }
+
+    /* Labels */
+    .label {
+        @apply text-sm font-medium text-textDark;
+    }
+}
