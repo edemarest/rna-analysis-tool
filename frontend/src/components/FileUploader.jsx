@@ -12,7 +12,7 @@ function FileUploader({ onSequenceUpload }) {
     }
   };
 
-  const handleUpload = async (event) => {
+  const handleUpload = (event) => {
     event.preventDefault();
     if (!file) {
       alert("Please select a FASTA file.");
@@ -21,25 +21,12 @@ function FileUploader({ onSequenceUpload }) {
 
     const reader = new FileReader();
 
-    reader.onload = async (e) => {
+    reader.onload = (e) => {
       try {
         const sequenceData = e.target.result;
-
-        const response = await fetch("http://127.0.0.1:5001/identify", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ sequence: sequenceData }),
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        const sequenceType = result.type || "Unknown";
+        const sequenceType = "RNA";
 
         onSequenceUpload(sequenceName || file.name, sequenceData, sequenceType);
-
       } catch (error) {
         alert("Failed to process the file. Please try again.");
       }

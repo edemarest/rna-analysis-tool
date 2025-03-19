@@ -1,49 +1,61 @@
-import RNA
-import numpy as np
-import base64
-import io
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
+import os
+import subprocess
+import shutil
+import cairosvg
+
+PLOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../tests/plots"))
+os.makedirs(PLOT_DIR, exist_ok=True)
 
 def predict_structure(inputs):
-    sequences = inputs.get("sequences", [])
-    filenames = inputs.get("filenames", ["Unknown file"])
-    if not sequences or not isinstance(sequences, list):
-        return {"error": "No sequence provided (Invalid or missing sequence array)"}
-
-    sequence = sequences[0] if sequences else ""
+    sequence = inputs.get("sequence", "").strip()
+    seq_type = inputs.get("Sequence Type", "").strip()
+    energy_cutoff = inputs.get("Energy Cutoff", None)
 
     if not sequence:
-        return {"error": "No sequence provided (Empty sequence)"}
-    if not sequences or not isinstance(sequences, list):
-        return {"error": "No sequence provided (Invalid or missing sequence array)"}
+        return {"error": "No sequence provided"}
 
-    sequence = sequences[0] if sequences else ""
+    if seq_type not in ["mRNA", "tRNA", "rRNA"]:
+        return {"error": "Invalid sequence type"}
 
-    if not sequence:
-        return {"error": "No sequence provided (Empty sequence)"}
+    try:
+        result = subprocess.run(["RNAfold", "-p"], input=sequence, capture_output=True, text=True)
+        output = result.stdout.strip().split("\n")
 
-    fc = RNA.fold_compound(sequence)
-    structure, mfe = fc.mfe()
+        if len(output) < 2:
+            return {"error": "RNAfold failed to generate output"}
 
-    fig, ax = plt.subplots(figsize=(6, 3))
-    ax.set_title("Predicted RNA Secondary Structure")
-    x = np.linspace(0, len(sequence), len(sequence))
-    y = np.sin(np.linspace(0, 2 * np.pi, len(sequence)))
-    ax.plot(x, y, label="RNA Secondary Structure", color="blue")
-    ax.legend()
+        structure = output[1].split(" ")[0]
+        mfe = output[1].split(" ")[-1].strip("()")
+        mfe_value = float(mfe)
 
-    buffer = io.BytesIO()
-    plt.savefig(buffer, format="png", bbox_inches="tight")
-    buffer.seek(0)
-    encoded_plot = base64.b64encode(buffer.getvalue()).decode("utf-8")
-    plt.close(fig)
+        if energy_cutoff is not None:
+            try:
+                energy_cutoff = float(energy_cutoff)
+                if mfe_value > energy_cutoff:
+                    return {"error": f"Predicted structure energy {mfe_value} exceeds cutoff {energy_cutoff}"}
+            except ValueError:
+                return {"error": "Invalid energy cutoff value"}
 
-    return {
-        "structure": structure,
-        "energy": f"{mfe:.2f} kcal/mol",
-        "filename": filenames[0],
-        "execution_time": round(np.random.uniform(1, 5), 2),
-        "plot": f"data:image/png;base64,{encoded_plot}"
-    }
+        base_filename = os.path.join(PLOT_DIR, sequence[:10])
+        ps_filename = f"{base_filename}.ps"
+        pdf_filename = f"{base_filename}.pdf"
+        svg_filename = f"{base_filename}.svg"
+
+        if os.path.exists("rna.ps"):
+            shutil.move("rna.ps", ps_filename)
+        else:
+            return {"error": "RNAfold did not create rna.ps"}
+
+        subprocess.run(["ps2pdf", ps_filename, pdf_filename])
+
+        cairosvg.svg2svg(url=pdf_filename, write_to=svg_filename)
+
+        return {
+            "sequence": sequence,
+            "structure": structure,
+            "mfe": mfe_value,
+            "plot": svg_filename
+        }
+
+    except Exception as e:
+        return {"error": str(e)}

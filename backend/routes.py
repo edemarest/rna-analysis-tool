@@ -19,19 +19,15 @@ def _build_cors_preflight_response():
     response.status_code = 200
     return response
 
-@routes.route("/identify", methods=["POST", "OPTIONS"])
-def identify():
-    if request.method == "OPTIONS":
-        return _build_cors_preflight_response()
+@routes.route("/predict_structure", methods=["POST"])
+def predict_structure_route():
+    data = request.get_json()
+    
+    if "predict_structure" not in FUNCTION_HANDLERS:
+        return jsonify({"error": "Function not found"}), 400
 
-    data = request.json
-    sequence = data.get("sequence", "")
-
-    if not sequence:
-        return jsonify({"error": "No sequence provided"}), 400
-
-    response = jsonify({"type": "RNA"})
-    return _set_cors_headers(response)
+    result = FUNCTION_HANDLERS["predict_structure"](data)
+    return jsonify(result)
 
 @routes.route("/<function_name>", methods=["POST", "OPTIONS"])
 def execute_function(function_name):
