@@ -52,19 +52,15 @@ export const handleRunFunction = async (
         validateSequences(selectedSequences);
 
         const requestBody = createRequestBody(functionEntry, selectedSequences, inputValues);
-        console.log("Sending API request:", JSON.stringify({
-            ...requestBody,
-            sequences: requestBody.sequences.map(seq => seq.slice(0, 50))
-        }, null, 2));
 
         const result = await sendApiRequest(functionEntry.apiRoute, requestBody);
-        console.log("API Response:", {
-            ...result,
-            sequences: result.sequences?.map(seq => seq.slice(0, 50))
+
+        setFunctionResults({
+            function: selectedFunction.name,
+            results: result,
         });
-        setFunctionResults(result);
     } catch (error) {
-        setFunctionResults({ error: "Failed to execute function." });
+        setFunctionResults({ error: error.message || "Failed to execute function." });
     }
 
     setIsLoading(false);
@@ -83,7 +79,7 @@ const findFunctionEntry = (selectedFunction, functionData) => {
         .find((f) => f.name.trim().toLowerCase() === selectedFunction.name.trim().toLowerCase());
 
     if (!functionEntry) {
-        throw new Error(`Function not found in functionData: "${selectedFunction.name}"`);
+        throw new Error(`Function not found: "${selectedFunction.name}"`);
     }
 
     return functionEntry;
@@ -108,31 +104,64 @@ const createRequestBody = (functionEntry, selectedSequences, inputValues) => {
         sanitizedInputs["Motif Length"] = parseInt(sanitizedInputs["Motif Length"], 10);
     }
 
-    return {
+    const functionName = functionEntry.name.trim().toLowerCase();
+
+    let requestBody = {
         function: functionEntry.name,
         sequences: selectedSequences.map(seq => seq.data.trim()),
         filenames: selectedSequences.map(seq => seq.name),
-        inputs: sanitizedInputs,
+        inputs: sanitizedInputs
     };
+
+    if (functionName === "predict structure") {
+        requestBody = {
+            sequence: selectedSequences[0]?.data.trim() || "",
+            "Sequence Type": sanitizedInputs["Sequence Type"] || "mRNA",
+            "File Name": selectedSequences[0]?.name || "rna_structure"
+        };
+
+        if (sanitizedInputs["Energy Cutoff"] !== undefined && sanitizedInputs["Energy Cutoff"] !== "") {
+            const parsedCutoff = parseFloat(sanitizedInputs["Energy Cutoff"]);
+            if (!isNaN(parsedCutoff)) {
+                requestBody["Energy Cutoff"] = parsedCutoff;
+            }
+        }
+    }
+
+    return requestBody;
 };
 
 const sendApiRequest = async (apiRoute, requestBody) => {
-    const response = await fetch(`${API_BASE_URL}${apiRoute}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        },
-        body: JSON.stringify(requestBody),
-    });
+    const url = `${API_BASE_URL}${apiRoute}`;
 
-    if (!response.ok) {
-        const errorResponse = await response.text();
-        throw new Error(`HTTP error! Status: ${response.status} - ${errorResponse}`);
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify(requestBody),
+        });
+
+        let responseData;
+        const contentType = response.headers.get("content-type");
+
+        if (contentType && contentType.includes("application/json")) {
+            responseData = await response.json();
+        } else {
+            responseData = await response.text();
+        }
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status} - ${responseData}`);
+        }
+
+        return responseData;
+
+    } catch (error) {
+        throw new Error(error.message || "API request failed.");
     }
-
-    const jsonResponse = await response.json();
-    return jsonResponse;
 };
 
 const scrollToResults = (resultsRef) => {

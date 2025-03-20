@@ -24,11 +24,26 @@ function FunctionConfig({ selectedFunction, onBack, onRunFunction }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const sanitizedInputs = {};
+
     Object.entries(inputValues).forEach(([key, value]) => {
       if (typeof value === "string" || typeof value === "number" || Array.isArray(value)) {
         sanitizedInputs[key] = value;
       }
     });
+
+    if (selectedFunction.name === "Predict Structure") {
+      if (sanitizedInputs["Energy Cutoff"] === "" || sanitizedInputs["Energy Cutoff"] === null) {
+        delete sanitizedInputs["Energy Cutoff"];
+      } else {
+        const energyCutoffValue = parseFloat(sanitizedInputs["Energy Cutoff"]);
+        if (isNaN(energyCutoffValue)) {
+          alert("Energy Cutoff must be a valid number.");
+          return;
+        }
+        sanitizedInputs["Energy Cutoff"] = energyCutoffValue;
+      }
+    }
+
     onRunFunction(sanitizedInputs);
   };
 
@@ -68,9 +83,18 @@ function FunctionConfig({ selectedFunction, onBack, onRunFunction }) {
         ))}
         <button
           type="submit"
-          className={`btn-primary w-full mt-4 ${Object.values(inputValues).some((val) => val === "") ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-          disabled={Object.values(inputValues).some((val) => val === "")}
+          className={`btn-primary w-full mt-4 ${
+            Object.entries(inputValues).some(
+              ([key, val]) => val === "" && key !== "Energy Cutoff"
+            )
+              ? "opacity-50 cursor-not-allowed"
+              : ""
+          }`}
+          disabled={
+            Object.entries(inputValues).some(
+              ([key, val]) => val === "" && key !== "Energy Cutoff"
+            )
+          }
         >
           Run {selectedFunction.name}
         </button>

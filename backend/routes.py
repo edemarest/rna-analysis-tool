@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_cors import CORS
 from handlers import FUNCTION_HANDLERS
+import os
 
 routes = Blueprint("routes", __name__)
 CORS(routes)
@@ -21,16 +22,48 @@ def _build_cors_preflight_response():
 
 @routes.route("/predict_structure", methods=["POST"])
 def predict_structure_route():
-    data = request.get_json()
-    
-    if "predict_structure" not in FUNCTION_HANDLERS:
-        return jsonify({"error": "Function not found"}), 400
+    """Handles RNA structure prediction requests."""
+    try:
+        data = request.get_json()
+        sequence = data.get("sequence", "").strip()
+        sequence_type = data.get("Sequence Type", "mRNA").strip()
+        file_name = data.get("File Name", "rna_structure").strip()
+        energy_cutoff = data.get("Energy Cutoff", None)
 
-    result = FUNCTION_HANDLERS["predict_structure"](data)
-    return jsonify(result)
+        if not sequence:
+            return jsonify({"error": "No RNA sequence provided"}), 400
+        if len(sequence) > 3000:
+            return jsonify({"error": f"Sequence length ({len(sequence)} nt) exceeds max (3000 nt)"}), 400
+
+        if energy_cutoff is not None:
+            try:
+                energy_cutoff = float(energy_cutoff)
+            except ValueError:
+                return jsonify({"error": "Invalid Energy Cutoff value. Must be a number."}), 400
+
+        result = FUNCTION_HANDLERS["predict_structure"]({
+            "sequence": sequence,
+            "Energy Cutoff": energy_cutoff,
+            "Sequence Type": sequence_type,
+            "File Name": file_name
+        })
+
+        if "error" in result:
+            return jsonify(result), 400
+
+        return jsonify({
+            "mfe": result.get("mfe"),
+            "dot_structure": result.get("dot_structure"),
+            "plot": result.get("plot")
+        })
+
+    except Exception as e:
+        print(f"[ERROR] Internal Server Error: {str(e)}")
+        return jsonify({"error": "Internal Server Error", "details": str(e)}), 500
 
 @routes.route("/<function_name>", methods=["POST", "OPTIONS"])
 def execute_function(function_name):
+    """Handles all other function executions dynamically."""
     if request.method == "OPTIONS":
         return _build_cors_preflight_response()
 

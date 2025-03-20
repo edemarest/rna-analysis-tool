@@ -1,0 +1,19 @@
+Sequence: >s2
+AUGUACCGAGCUUCGGCUUAAAGCUUCUCGGAAAUCGUCGUGUAGGAGGUGCUGAGGAUGGUGGCGCUAAGGUCUACGCGG
+CGGGAUCGGCGCGUACGAUGUACCUACCUACCUUGGAGGGAUCGUCGACGGUCUAGUAGCUGAGCUCGCUCUAUCGCUCGGA
+GCGUGGUGGAGGUCUACGACCGUGGAGGCUUCCCGUUCGCCUACGGCUCGACGUGAGCUCGGCUUCGGGAAGUACCGCGGAU
+GGCUAGCUGAUGGUCUACCGUGGUGCGGAUCUACGGCGGCUACGUAGGUGGAGCGGUGCUAUUCGCUACCUCGGUGACUGGA
+UCGUGGAUGGCGUCUAGGUGGAAGUCGAGCGGGGCGGAAGCGUGGUGCGUGGUGAUGCUUGCUGAGUACGGUUUCCGAUUUG
+CGGCGGGUAGCGCGUACGGGUCGUGAGGCGGGAUGAGGGAUGUAGUGGACCGCUAGAGGUUGCGUUGCGAUGCGUGAGGACG
+AUCGUAGUCGGUCGACGAAGGAGGUCGAGGUGGGAAGCGGUGGAAGGUGUCGGAGUGAGUGCGGGAUGUAGGGGUGAGGAAG
+GUGGCGAGGGAAGGGAUGAGGUCGAGUACGGAUGUAGGUUGAGGUGGUCGAGGAUGAGGAUGUGGACGAUGGAAGCGGAUGG
+AGGAUGAUGGAGGGAAGGUCGAGGUGGUCGGAAGUAGGUGGUCGAGGUGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUG
+GAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGG
+UGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGA
+GGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUG
+GAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGG
+UGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGA
+GGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUG
+GAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGG
+UGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGAGGUGGA
+Structure: .(.((((..(((((.((((...((((((......((((((((((((.(((((((.......)))))))....))))))))))))..((.((...(((..(.(((((.((.(((((.(......(.((.((..((((...(((...(((.(((((((.(((...((.(........(((((..(((.....(((((((.(((((((.((.(((.((.(.(.(((.(((((.(....((((.(.(....(((.((.....((((((....(((..((((.(.((..((((.(.......((..((((.((((((((((((((.(((....(((......((((((.((....(((..(((((.(((((((...((((.((((((...)))))).)))).))))))).))))).(((.....))).((((.(((((((.((((.........(.(((((...))))).)..)))).))))))).))))....(.(((((..(((.(((((.......)))))..)))...))))).).(.((.(((.(.....).))).)).)....((.(......).))................((((.(((..............))).)))).)))....)).))))))......))).......(((.((...((.....))...)).))).......))).))))))))))))))))))...))........).))))..)).)))))....)))..)))))).....)).)))...).).))))....).))))).))).)..).)).))).)).))))))).).)))))).....)))..))))).....).))....).)).)))))))...))).....))).....)))).)).)).)......).)))))))))))).).)))...)).))...))))))..)))).)))))...)))).)................................................................................................................................................................................................................................................................................................................................................................................................................................................

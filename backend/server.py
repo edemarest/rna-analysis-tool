@@ -1,12 +1,15 @@
-from flask import Flask, request
+from flask import Flask
 from routes import routes
 from flask_cors import CORS
+import os
+
+OUTPUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../output"))
 
 app = Flask(__name__)
+app.static_folder = OUTPUT_DIR
+app.static_url_path = "/output"
 
-# Enable CORS globally
 CORS(app)
-
 app.register_blueprint(routes)
 
 if __name__ == "__main__":
